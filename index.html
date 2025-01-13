@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Sederhana</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .container {
+            padding: 20px;
+            text-align: center;
+        }
+        .product {
+            display: inline-block;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            width: 200px;
+            background-color: white;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        #cart {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#" onclick="showSection('home')">Beranda</a>
+    <a href="#" onclick="showSection('products')">Produk</a>
+    <a href="#" onclick="showSection('cart')">Checkout</a>
+</nav>
+
+<div id="home" class="container">
+    <h1>Selamat Datang di Toko Online</h1>
+    <p>Temukan produk terbaik kami!</p>
+</div>
+
+<div id="products" class="container" style="display:none;">
+    <h2>Daftar Produk</h2>
+    <div id="product-list"></div>
+</div>
+
+<div id="cart" class="container" style="display:none;">
+    <h2>Keranjang Belanja</h2>
+    <div id="cart-items"></div>
+    <p id="total-price"></p>
+    <button class="btn" onclick="checkout()">Checkout</button>
+</div>
+
+<script>
+    const products = [
+        { id: 1, name: 'Laptop', description: 'Laptop berkinerja tinggi', price: 700, img: 'https://via.placeholder.com/150' },
+        { id: 2, name: 'Smartphone', description: 'Smartphone terbaru', price: 500, img: 'https://via.placeholder.com/150' },
+    ];
+
+    let cart = [];
+
+    function showSection(section) {
+        document.getElementById('home').style.display = 'none';
+        document.getElementById('products').style.display = 'none';
+        document.getElementById('cart').style.display = 'none';
+        document.getElementById(section).style.display = 'block';
+    }
+
+    function displayProducts() {
+        const productList = document.getElementById('product-list');
+        products.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product';
+            productDiv.innerHTML = `
+                <img src="${product.img}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>Harga: $${product.price}</p>
+                <button class="btn" onclick="addToCart(${product.id})">Tambah ke Keranjang</button>
+            `;
+            productList.appendChild(productDiv);
+        });
+    }
+
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        cart.push(product);
+        alert('Produk telah ditambahkan ke keranjang!');
+    }
+
+    function displayCart() {
+        const cartItems = document.getElementById('cart-items');
+        cartItems.innerHTML = '';
+        let totalPrice = 0;
+        cart.forEach(item => {
+            totalPrice += item.price;
+            const itemDiv = document.createElement('div');
+            itemDiv.innerHTML = `<p>${item.name} - $${item.price}</p>`;
+            cartItems.appendChild(itemDiv);
+        });
+        document.getElementById('total-price').innerText = `Total: $${totalPrice}`;
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert('Keranjang belanja kosong!');
+            return;
+        }
+        alert('Terima kasih atas pembelian Anda!');
+        cart = [];
+        displayCart();
+    }
+
+    window.onload = function() {
+        displayProducts();
+    }
+</script>
+
+</body>
+</html>
